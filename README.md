@@ -14,6 +14,17 @@ Reading English technical content is essential for Chinese-speaking developers, 
 
 - **Built for AI-assisted workflows** — This skill is designed for [Claude Code](https://docs.anthropic.com/en/docs/claude-code), automating the tedious parts (splitting large files, tracking progress, merging results) so you can focus on reading, not managing translation logistics.
 
+### Why Not Traditional Translation Tools?
+
+Machine translation tools (Google Translate, DeepL, etc.) produce functional but stiff output — you can always "feel" it's a machine. LLM-powered translation understands context, disambiguates polysemous words, and produces naturally flowing Chinese that respects the original tone. Technical writing reads technical; blog posts read conversational. The difference is immediately noticeable.
+
+### Who Is This For?
+
+- **RSS readers** — You subscribe to English RSS feeds but find them slow to read. Use [Obsidian Web Clipper](https://obsidian.md) to save articles as Markdown, then translate with en2zh.
+- **Documentation readers** — You read English docs (API references, SDK guides, RFCs) daily and want a bilingual companion for quicker comprehension.
+- **Language learners** — You want to build reading fluency by seeing both languages side-by-side, picking up vocabulary in context rather than from flashcards.
+- **Note-takers** — You clip web articles into Markdown tools (Obsidian, Logseq, etc.) and want bilingual notes in your knowledge base.
+
 ## Features
 
 - **Interleaved bilingual output**: Each English paragraph is immediately followed by its Chinese translation in blockquote (`>`) format
