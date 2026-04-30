@@ -2,6 +2,18 @@
 
 Translates English markdown documents to Chinese with interleaved bilingual format.
 
+## Why This Skill?
+
+Reading English technical content is essential for Chinese-speaking developers, yet many find themselves stuck between two unsatisfying options: struggling through the original English text, or reading a standalone Chinese translation that loses the context of the source. **en2zh** was created to offer a third path.
+
+- **Learn English while you read** — The interleaved format keeps the original text front and center. You read the English first, then glance at the Chinese translation only when needed. Over time, you naturally absorb vocabulary and sentence patterns without刻意studying.
+
+- **Bilingual alternation fits Asian reading habits** — In East Asian publishing, parallel bilingual layouts (e.g. 中英對照 in Taiwan, 英中对照 in mainland China) have long been the norm for textbooks, news, and reference materials. Readers naturally scan the primary language and refer to the secondary one on demand. The blockquote-based interleaved format brings this familiar pattern to plain Markdown.
+
+- **No more context-switching** — Unlike side-by-side or separate-file translations, interleaving keeps the original and translation in the same visual flow. You never lose your place or context when switching between languages.
+
+- **Built for AI-assisted workflows** — This skill is designed for [Claude Code](https://docs.anthropic.com/en/docs/claude-code), automating the tedious parts (splitting large files, tracking progress, merging results) so you can focus on reading, not managing translation logistics.
+
 ## Features
 
 - **Interleaved bilingual output**: Each English paragraph is immediately followed by its Chinese translation in blockquote (`>`) format
