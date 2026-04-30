@@ -131,6 +131,10 @@ python scripts/update_manifest.py article_batches/manifest.json 1 translated
 python scripts/merge_md.py article_batches/manifest.json
 ```
 
+## Notes
+
+- **Large files may fail due to context limits** — If the source markdown is too large, the translation may fail midway because the conversation context window runs out. This is expected. Simply run `/compact` to compress the context, then ask Claude Code to continue from where it left off (check `manifest.json` for progress). The batch-level checkpoint mechanism ensures no work is lost.
+
 ## License
 
 See [LICENSE](LICENSE) for details.

@@ -131,6 +131,10 @@ python scripts/update_manifest.py article_batches/manifest.json 1 translated
 python scripts/merge_md.py article_batches/manifest.json
 ```
 
+## 注意事项
+
+- **大文件可能因上下文不足而失败** — 如果源 Markdown 文件过大，翻译可能会在中途因对话上下文窗口耗尽而中断。这是正常现象。只需执行 `/compact` 压缩上下文，然后让 Claude Code 从中断处继续即可（通过 `manifest.json` 查看进度）。批级别的检查点机制确保不会丢失已完成的工作。
+
 ## 许可证
 
 详见 [LICENSE](LICENSE)。
