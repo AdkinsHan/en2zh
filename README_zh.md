@@ -71,6 +71,54 @@ python scripts/merge_md.py <manifest.json> [--output <output.md>]
 - 表格保留原文，在其后附加完整的中文翻译表格
 - Frontmatter（`---` 之间的 YAML）不翻译
 
+## 如何使用
+
+本项目是一个 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) 技能（skill）。安装后，当您要求翻译 Markdown 文件时，Claude Code 会自动调用它。
+
+### 安装
+
+1. 将此仓库克隆到 Claude Code 的技能目录下：
+
+```bash
+git clone https://github.com/AdkinsHan/en2zh.git ~/.claude/skills/en2zh
+```
+
+2. 技能即已就绪。Claude Code 会通过 `SKILL.md` 文件自动检测到它。
+
+### 使用
+
+在 Claude Code 会话中，直接要求翻译一个 Markdown 文件即可：
+
+```
+Translate /path/to/my-article.md to Chinese
+```
+
+或直接使用技能名称：
+
+```
+/en2zh /path/to/my-article.md
+```
+
+Claude Code 会自动处理拆分、翻译、合并等步骤，并在原文旁边生成 `my-article_zh.md` 文件。
+
+### 手动使用（不依赖 Claude Code）
+
+你也可以独立使用这些脚本：
+
+```bash
+# 1. 将大文件拆分为批次
+python scripts/split_md.py article.md --batch-size 80
+
+# 2. 手动翻译每个批次文件
+#    （编辑 001_batch.md、002_batch.md 等）
+
+# 3. 翻译完每个批次后更新 manifest
+python scripts/update_manifest.py article_batches/manifest.json 1 translated
+
+# 4. 合并所有已翻译的批次
+python scripts/merge_md.py article_batches/manifest.json
+```
+
 ## 许可证
 
 详见 [LICENSE](LICENSE)。
