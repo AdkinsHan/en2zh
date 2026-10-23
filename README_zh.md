@@ -1,10 +1,10 @@
-# en2zh
+# entzh
 
 将英文 Markdown 文档翻译为中文，采用交错双语格式。
 
 ## 为什么要开发这个技能？
 
-阅读英文技术内容对中文开发者来说不可或缺，但许多人面临两个不太理想的选择：硬啃英文原文，或者读一份脱离原文语境的独立中文翻译。**en2zh** 提供了第三条路。
+阅读英文技术内容对中文开发者来说不可或缺，但许多人面临两个不太理想的选择：硬啃英文原文，或者读一份脱离原文语境的独立中文翻译。**entzh** 提供了第三条路。
 
 - **边读边学英语** — 交错格式让原文始终在眼前。你先读英文，只在需要时才瞟一眼中文翻译。久而久之，无需刻意学习就能自然积累词汇和句式。
 
@@ -20,7 +20,7 @@
 
 ### 适合哪些人？
 
-- **RSS 订阅者** — 订阅了英文 RSS 源但阅读吃力？用 [Obsidian Web Clipper](https://obsidian.md) 将文章保存为 Markdown，再用 en2zh 翻译即可。
+- **RSS 订阅者** — 订阅了英文 RSS 源但阅读吃力？用 [Obsidian Web Clipper](https://obsidian.md) 将文章保存为 Markdown，再用 entzh 翻译即可。
 - **文档阅读者** — 日常阅读英文文档（API 参考、SDK 指南、RFC 等），希望有双语对照帮助快速理解。
 - **语言学习者** — 希望通过双语对照阅读来提升阅读能力，在语境中自然积累词汇，而非死记硬背。
 - **笔记爱好者** — 使用 Obsidian、Logseq 等工具剪藏网页文章，希望知识库中保留双语笔记。
@@ -91,6 +91,7 @@ python scripts/merge_md.py <manifest.json> [--output <output.md>]
 - 专有名词（产品名、公司名、人名）保持原文
 - 代码块和行内代码不翻译
 - 图片和嵌入内容不翻译，仅翻译周围文字
+- **跳过内容（原样保留，不生成翻译块）**：图片链接（Markdown `![](...)`、`![[...]]`、HTML `<img>`、单独成行的图片 URL）、SVG 标记与 `.svg` 资源、以及本身已是中文的原文（整篇以中文为主的文件直接跳过）
 - 表格保留原文，在其后附加完整的中文翻译表格
 - Frontmatter（`---` 之间的 YAML）不翻译
 
@@ -103,7 +104,7 @@ python scripts/merge_md.py <manifest.json> [--output <output.md>]
 1. 将此仓库克隆到 Claude Code 的技能目录下：
 
 ```bash
-git clone https://github.com/AdkinsHan/en2zh.git ~/.claude/skills/en2zh
+git clone https://github.com/AdkinsHan/en2zh.git ~/.claude/skills/entzh
 ```
 
 2. 技能即已就绪。Claude Code 会通过 `SKILL.md` 文件自动检测到它。
@@ -119,7 +120,7 @@ Translate /path/to/my-article.md to Chinese
 或直接使用技能名称：
 
 ```
-/en2zh /path/to/my-article.md
+/entzh /path/to/my-article.md
 ```
 
 Claude Code 会自动处理拆分、翻译、合并等步骤，并在原文旁边生成 `my-article_zh.md` 文件。

@@ -1,10 +1,10 @@
-# en2zh
+# entzh
 
 Translates English markdown documents to Chinese with interleaved bilingual format.
 
 ## Why This Skill?
 
-Reading English technical content is essential for Chinese-speaking developers, yet many find themselves stuck between two unsatisfying options: struggling through the original English text, or reading a standalone Chinese translation that loses the context of the source. **en2zh** was created to offer a third path.
+Reading English technical content is essential for Chinese-speaking developers, yet many find themselves stuck between two unsatisfying options: struggling through the original English text, or reading a standalone Chinese translation that loses the context of the source. **entzh** was created to offer a third path.
 
 - **Learn English while you read** — The interleaved format keeps the original text front and center. You read the English first, then glance at the Chinese translation only when needed. Over time, you naturally absorb vocabulary and sentence patterns without刻意studying.
 
@@ -20,7 +20,7 @@ Machine translation tools (Google Translate, DeepL, etc.) produce functional but
 
 ### Who Is This For?
 
-- **RSS readers** — You subscribe to English RSS feeds but find them slow to read. Use [Obsidian Web Clipper](https://obsidian.md) to save articles as Markdown, then translate with en2zh.
+- **RSS readers** — You subscribe to English RSS feeds but find them slow to read. Use [Obsidian Web Clipper](https://obsidian.md) to save articles as Markdown, then translate with entzh.
 - **Documentation readers** — You read English docs (API references, SDK guides, RFCs) daily and want a bilingual companion for quicker comprehension.
 - **Language learners** — You want to build reading fluency by seeing both languages side-by-side, picking up vocabulary in context rather than from flashcards.
 - **Note-takers** — You clip web articles into Markdown tools (Obsidian, Logseq, etc.) and want bilingual notes in your knowledge base.
@@ -91,6 +91,7 @@ For small files (< 100 lines), skip splitting and translate directly in a single
 - Proper nouns (product names, company names, person names) are kept in original form
 - Code blocks and inline code are not translated
 - Images and embeds are not translated; only surrounding text is translated
+- **Skipped content (kept as-is, no translation block)**: image links (Markdown `![](...)`, `![[...]]`, HTML `<img>`, bare image URLs), SVG markup and `.svg` assets, and source text that is already Chinese (a predominantly-Chinese file is skipped entirely)
 - Tables are kept intact with a complete translated table appended after the original
 - Frontmatter (YAML between `---`) is not translated
 
@@ -103,7 +104,7 @@ This project is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) 
 1. Clone this repository to your Claude Code skills directory:
 
 ```bash
-git clone https://github.com/AdkinsHan/en2zh.git ~/.claude/skills/en2zh
+git clone https://github.com/AdkinsHan/en2zh.git ~/.claude/skills/entzh
 ```
 
 2. The skill is now available. Claude Code will detect it via the `SKILL.md` file.
@@ -119,7 +120,7 @@ Translate /path/to/my-article.md to Chinese
 Or use the skill name directly:
 
 ```
-/en2zh /path/to/my-article.md
+/entzh /path/to/my-article.md
 ```
 
 Claude Code will handle the rest — splitting, translating, merging — and produce a `my-article_zh.md` file alongside the original.

@@ -1,9 +1,9 @@
 ---
-name: en2zh
-description: Translates English markdown documents to Chinese with interleaved bilingual format. Use when the user asks to translate markdown files, notes, or documents from English to Chinese, or when the user mentions en2zh, English-to-Chinese translation, or bilingual markdown formatting. Handles large files via batched processing with automatic context compression after each step to prevent context window overflow.
+name: entzh
+description: Translates English markdown documents to Chinese with interleaved bilingual format. Use when the user asks to translate markdown files, notes, or documents from English to Chinese, or when the user mentions entzh, English-to-Chinese translation, or bilingual markdown formatting. Handles large files via batched processing with automatic context compression after each step to prevent context window overflow.
 ---
 
-# En2zh — English to Chinese Markdown Translator
+# Entzh — English to Chinese Markdown Translator
 
 ## Overview
 
@@ -33,10 +33,26 @@ This is an English paragraph.
 - Headings, list items, code block descriptions, table headers — all get translated
 - **Tables are NOT translated with `>` blockquote** — instead, keep the original table intact and append a complete translated table after it (same column structure, translated cell content)
 - Code blocks (` ``` `) and inline code are NOT translated; keep them as-is
-- Images and embeds (`![[image.png]]`, `![alt](url)`) are NOT translated; keep them as-is. Only translate any surrounding text.
+- Images, embeds, and SVG are NOT translated and need no Chinese block at all — not even for alt text (see **Skip Rules** below). Only the surrounding text is translated.
 - If the source text already contains `>` blockquotes, the Chinese translation uses `>>` (nested blockquote) to distinguish from translation blockquotes
 - Frontmatter (YAML between `---`) is NOT translated
 - Blank lines between English and Chinese blocks are preserved
+
+## Skip Rules (no translation, keep as-is)
+
+The following content is **skipped**: copy it into the output byte-for-byte, add no Chinese blockquote, and do not translate any text inside it.
+
+1. **Image links** — image references are not translated, including their alt text, title, filename, and URL:
+   - Markdown images and embeds: `![alt](url)`, `![[image.png]]`
+   - HTML images: `<img src="..." alt="...">`
+   - Bare image URLs on their own line (e.g. `https://example.com/pic.png`)
+2. **SVG** — inline `<svg>...</svg>` markup (including its `<title>`, `<desc>`, and `<text>` contents), linked `.svg` assets, and SVG URLs. Preserve the markup exactly; never rewrite or annotate it.
+3. **Source that is already Chinese** — skip translation in these cases:
+   - A block whose prose is already Chinese: keep it unchanged, no duplicate Chinese blockquote.
+   - A file whose body is predominantly Chinese: produce no `_zh.md` output for it at all, and report it as skipped.
+   - Mixed blocks: translate only the English sentences; leave the existing Chinese text untouched.
+
+If a skipped element sits between two English paragraphs, it must not interrupt interleaving — the paragraph before and the paragraph after are each translated normally.
 
 ## Translation Quality Guidelines
 
@@ -60,7 +76,7 @@ The translated file goes in the same directory as the original.
 Copy this checklist and track progress:
 
 ```
-En2zh Progress:
+Entzh Progress:
 - [ ] Step 1: Split markdown into batches
 - [ ] Step 2: Translate batch by batch
 - [ ] Step 3: Merge translated batches
@@ -74,7 +90,7 @@ En2zh Progress:
 For files over ~100 lines, split into manageable batches:
 
 ```bash
-python /Users/han/.claude/skills/en2zh/scripts/split_md.py <input.md> --batch-size 80
+python /Users/han/.claude/skills/entzh/scripts/split_md.py <input.md> --batch-size 80
 ```
 
 This creates `<input>_batches/` with:
@@ -94,7 +110,7 @@ After splitting is complete, write a `workflow_state.md` file in the batch direc
 **Create `<batch_dir>/workflow_state.md`:**
 
 ```markdown
-# En2zh Workflow State
+# Entzh Workflow State
 
 ## Source
 - File: <original_filename>
@@ -161,7 +177,7 @@ Second paragraph.
 ```
 
 ```bash
-python /Users/han/.claude/skills/en2zh/scripts/update_manifest.py <manifest.json> <batch_index> translated
+python /Users/han/.claude/skills/entzh/scripts/update_manifest.py <manifest.json> <batch_index> translated
 ```
 
 **Important:** Process ONE batch at a time. After translating each batch, update the manifest before moving to the next. This ensures progress is saved even if interrupted.
@@ -213,7 +229,7 @@ npm install
 ```
 ```
 
-Images and embeds — keep untranslated, only translate surrounding text:
+Images and embeds — keep untranslated (alt text included), no Chinese block, only translate surrounding text:
 ```markdown
 Here is the architecture diagram:
 
@@ -315,7 +331,7 @@ After all batches are translated, update both `translation_context.md` and `work
 **Update `<batch_dir>/workflow_state.md`:**
 
 ```markdown
-# En2zh Workflow State
+# Entzh Workflow State
 
 ## Source
 - File: <original_filename>
@@ -343,7 +359,7 @@ After all batches are translated, update both `translation_context.md` and `work
 After all batches are translated:
 
 ```bash
-python /Users/han/.claude/skills/en2zh/scripts/merge_md.py <manifest.json>
+python /Users/han/.claude/skills/entzh/scripts/merge_md.py <manifest.json>
 ```
 
 This produces `<source>_zh.md` in the batch directory. Verify the output file before proceeding.
@@ -355,7 +371,7 @@ After merging, update `workflow_state.md` to reflect the merge result. The merge
 **Update `<batch_dir>/workflow_state.md`:**
 
 ```markdown
-# En2zh Workflow State
+# Entzh Workflow State
 
 ## Source
 - File: <original_filename>
@@ -379,7 +395,7 @@ After merging, update `workflow_state.md` to reflect the merge result. The merge
 ### Step 4: Final review and move to vault
 
 1. Read the merged output file and verify:
-   - Every English block has a corresponding Chinese blockquote
+   - Every English block has a corresponding Chinese blockquote, except the skipped content defined in **Skip Rules** (image links, SVG, already-Chinese text), which appears unchanged with no Chinese block
    - No broken markdown formatting
    - Code blocks are preserved intact
    - Frontmatter is intact
@@ -393,7 +409,7 @@ After the final file is in place and verified, perform a final compression. The 
 **Final update to `<batch_dir>/workflow_state.md`:**
 
 ```markdown
-# En2zh Workflow State
+# Entzh Workflow State
 
 ## Result
 - Status: ✅ Complete
@@ -416,14 +432,14 @@ After the final file is in place and verified, perform a final compression. The 
 Split a markdown file into numbered batches with a manifest for progress tracking.
 
 ```bash
-python /Users/han/.claude/skills/en2zh/scripts/split_md.py <input.md> [--batch-size 80] [--output-dir <dir>]
+python /Users/han/.claude/skills/entzh/scripts/split_md.py <input.md> [--batch-size 80] [--output-dir <dir>]
 ```
 
 ### update_manifest.py
 Update a batch's status in the manifest after translation.
 
 ```bash
-python /Users/han/.claude/skills/en2zh/scripts/update_manifest.py <manifest.json> <batch_index> <status>
+python /Users/han/.claude/skills/entzh/scripts/update_manifest.py <manifest.json> <batch_index> <status>
 # status: pending | translating | translated | merged
 ```
 
@@ -431,7 +447,7 @@ python /Users/han/.claude/skills/en2zh/scripts/update_manifest.py <manifest.json
 Merge all translated batches into a single output file.
 
 ```bash
-python /Users/han/.claude/skills/en2zh/scripts/merge_md.py <manifest.json> [--output <output.md>]
+python /Users/han/.claude/skills/entzh/scripts/merge_md.py <manifest.json> [--output <output.md>]
 ```
 
 ## Tips
@@ -445,4 +461,4 @@ python /Users/han/.claude/skills/en2zh/scripts/merge_md.py <manifest.json> [--ou
 - **Tables**: Never translate a table row-by-row with `>` blockquotes. Keep the original table intact, then append a complete translated table after it with the same column structure. The split script already ensures tables are never broken across batches.
 - **Obsidian elements**: Wikilinks (`[[note]]`), embeds (`![[image.png]]`), callouts (`> [!note]`), and tags (`#tag`) are structural syntax — keep them as-is, only translate any surrounding visible text. Callout titles (the text after `[!type]`) can be translated.
 - **Special elements**: Footnotes follow the standard rule — translate text content, keep structural syntax, wrap Chinese in `> `.
-- **Mixed-language source**: If the source file already contains Chinese (e.g., a Chinese title in the filename), preserve the existing Chinese as-is, only translate the English portions.
+- **Mixed-language source**: If the source file already contains Chinese (e.g., a Chinese title in the filename), preserve the existing Chinese as-is, only translate the English portions. A block or file that is already Chinese is skipped per the **Skip Rules**.
